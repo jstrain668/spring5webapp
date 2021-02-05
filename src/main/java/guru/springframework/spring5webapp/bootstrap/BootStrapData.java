@@ -23,15 +23,22 @@ public class BootStrapData implements CommandLineRunner {
 
         System.out.println("Started in Bootstrap");
 
+        Publisher wrox = new Publisher("Wrox","17 Easy Street","New York","NY","ZX11");
+        publisherRepository.save(wrox);
+
         Author eric = new Author("Eric","Evans");
         Book ddd = new Book("Domain Driven Design","123123");
         eric.getBooks().add(ddd);
         ddd.getAuthors().add(eric);
-        Publisher wrox = new Publisher("Wrox","17 Easy Street","New York","NY","ZX11");
+        ddd.setPublisher(wrox);
+        wrox.getBooks().add(ddd);
+
+        System.out.println("Before first save of author and book: ");
 
         authorRespository.save(eric);
         bookRepository.save(ddd);
         publisherRepository.save(wrox);
+
 
         System.out.println("Number of publishers: "+publisherRepository.count());
 
@@ -40,9 +47,15 @@ public class BootStrapData implements CommandLineRunner {
         rod.getBooks().add(noEJB);
         noEJB.getAuthors().add(rod);
 
+        noEJB.setPublisher(wrox);
+        wrox.getBooks().add(noEJB);
+
         authorRespository.save(rod);
         bookRepository.save(noEJB);
+        publisherRepository.save(wrox);
 
+        System.out.println("Number of publishers: "+publisherRepository.count());
+        System.out.println("Number of authors: "+authorRespository.count());
         System.out.println("Number of books: "+bookRepository.count());
 
     }
